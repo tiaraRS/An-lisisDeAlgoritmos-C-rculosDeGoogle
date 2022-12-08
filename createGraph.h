@@ -8,7 +8,7 @@
 #include <unordered_set>
 using namespace std;
 
-void getGraph(string fileName, unordered_map<string,int>& nodesMapStrToInt, vector<vector<int>>& graph){
+void getGraphSet(string fileName, unordered_map<string,int>& nodesMapStrToInt, vector<unordered_set<int>>& graph){
     ifstream infile;
     infile.open("gplus/"+fileName);
     int dotPosition = fileName.find(".");
@@ -20,13 +20,22 @@ void getGraph(string fileName, unordered_map<string,int>& nodesMapStrToInt, vect
     while(infile >> id1Str >> id2Str){
         int id1 = nodesMapStrToInt[id1Str];
         int id2 = nodesMapStrToInt[id2Str];
-        graph[id1].push_back(id2);
+        graph[id1].insert(id2);
         nodesInFile.insert(id1);
         nodesInFile.insert(id2);
     }
     for(auto it:nodesInFile){
-        graph[nodeId].push_back(it);
+        graph[nodeId].insert(it);
     }
+}
+
+vector<vector<int>> getGraphAdjList(vector<unordered_set<int>>& graphSet){
+    vector<vector<int>> graph;
+    for(auto nodeAdj:graphSet){
+        vector<int> adj = vector<int>(nodeAdj.begin(),nodeAdj.end()); 
+        graph.push_back(adj);
+    }
+    return graph;
 }
 
 void mapNodes(string fileName, unordered_map<string,int>& nodesMapStrToInt, unordered_map<int,string>& nodesMapIntToStr, int& counter){
@@ -55,11 +64,23 @@ void mapNodes(string fileName, unordered_map<string,int>& nodesMapStrToInt, unor
     }
 }
 
+int numberOfNodes(vector<vector<int>> graph){
+    return graph.size();
+}
 
-int main(){
+int numberOfEdges(vector<vector<int>> graph){
+    int nEdges = 0;
+    for(auto nodeAdj:graph){
+        nEdges+=nodeAdj.size();
+    }
+    return nEdges;
+}
+
+vector<vector<int>> createGraph(){
     unordered_map<string,int> nodesStrToInt;
     unordered_map<int,string> nodesIntToStr;
-    vector<vector<int>> graph(102120,vector<int>());
+    vector<unordered_set<int>> graphSet(102120,unordered_set<int>());
+    vector<vector<int>> graph;
     int counter = 0;
     DIR *dr;
     struct dirent *en;
@@ -82,22 +103,11 @@ int main(){
             int dotPosition = fileName.find(".");
             string extension = fileName.substr(dotPosition+1);
             if(extension=="edges"){
-                getGraph(fileName,nodesStrToInt,graph);
+                getGraphSet(fileName,nodesStrToInt,graphSet);
             }
         }
         closedir(dr); //close all directory
-        cout << graph[0].size() << endl;
-        cout << nodesIntToStr[0] << " " << nodesIntToStr[graph[0][0]]<<endl;
-        cout << graph[1].size() << endl;
-        cout << nodesIntToStr[1] << " " << nodesIntToStr[graph[1][0]]<<endl;
-        cout << nodesIntToStr[1] << " " << nodesIntToStr[(graph[1].back())]<<endl;
-        cout << "Node 1 "<<endl;
-        for(auto n:graph[1]){
-            cout << nodesIntToStr[1] << " " << nodesIntToStr[n]<<endl;
-        }
+        graph = getGraphAdjList(graphSet);
+        return graph;
     }
-    // for(auto p:nodes){
-    //     cout<<p.first<<endl;
-    // }
-    return 0;
 }
