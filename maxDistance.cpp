@@ -10,6 +10,8 @@
 using namespace std;
 
 int maxDistance = 0;
+int avgDistance = 0;
+int paths = 0;
 int INF  = INT_MAX;
 
 vector<int> bfs(int s, vector<vector<int>>& graph){
@@ -23,6 +25,8 @@ vector<int> bfs(int s, vector<vector<int>>& graph){
         if (d[u] > maxDistance){
             maxDistance = d[u];
         }
+        paths++;
+        avgDistance += d[u];
         for (auto neighbor:graph[u]){
             if (d[neighbor] == INF) { // if v.first is unvisited + reachable
                 d[neighbor] = d[u] + 1; // make d[v.first] != INF to flag it
@@ -30,6 +34,7 @@ vector<int> bfs(int s, vector<vector<int>>& graph){
             }
         }
     }
+    avgDistance = avgDistance / paths;
     return d;
 }
 
@@ -48,3 +53,4 @@ int main(){
     return 0;
 }
 //g++ -O2 -std=c++11 -Wall "-Wl,--stack=268435456" numberOfScc.cpp -o scc2.exe
+//La distancia m├íxima entre dos usuarios cualquiera de la red es 13
