@@ -108,6 +108,6 @@ vector<vector<int>> createGraph(){
         }
         closedir(dr); //close all directory
         graph = getGraphAdjList(graphSet);
-        return graph;
     }
+    return graph;
 }
