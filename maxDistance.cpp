@@ -25,9 +25,11 @@ vector<int> bfs(int s, vector<vector<int>>& graph){
         if (d[u] > maxDistance){
             maxDistance = d[u];
         }
-        paths++;
-        // cout << "distance("<<s<<","<<u<<") = "<< d[u] << endl;
-        avgDistance += d[u];
+        if (d[u]>0){
+            // cout << "distance("<<s<<","<<u<<") = "<< d[u] << endl;
+            paths++;
+            avgDistance += d[u];
+        }
         for (auto neighbor:graph[u]){
             if (d[neighbor] == INF) { // if v.first is unvisited + reachable
                 d[neighbor] = d[u] + 1; // make d[v.first] != INF to flag it
@@ -105,7 +107,6 @@ void print(vector<vector<int>> graph){
 }
 
 int main(){
-    cout << INF << endl;
     vector<vector<int>> g = createGraph("undirected");
     // vector<vector<int>> g = proveGraph(4);
     // print(g);
@@ -113,6 +114,7 @@ int main(){
     int gsize = g.size() ;
     for(int node = 0; node < gsize; node++){
         bfs(node,g);
+        printf("-> BFS at [ %d / %d ]\r",node,gsize);
     }
     cout << "La distancia máxima entre dos usuarios cualquiera de la red es " << maxDistance << endl;
     avgDistance = avgDistance / paths;

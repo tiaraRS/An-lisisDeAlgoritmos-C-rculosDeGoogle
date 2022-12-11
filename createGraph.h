@@ -14,7 +14,7 @@ void getGraphSet(string fileName, unordered_map<string,int>& nodesMapStrToInt, v
     int dotPosition = fileName.find(".");
     string nodeIdStr = fileName.substr(0,dotPosition);
     int nodeId = nodesMapStrToInt[nodeIdStr];
-    cout << "Reading "+fileName<<"... "<<endl;
+    printf("Reading %s ... \r",fileName.c_str());
     string id1Str, id2Str;
     unordered_set<int> nodesInFile;
     while(infile >> id1Str >> id2Str){
@@ -35,7 +35,7 @@ void getUndirectedGraphSet(string fileName, unordered_map<string,int>& nodesMapS
     int dotPosition = fileName.find(".");
     string nodeIdStr = fileName.substr(0,dotPosition);
     int nodeId = nodesMapStrToInt[nodeIdStr];
-    cout << "Reading "+fileName<<"... "<<endl;
+    printf("Reading %s ... \r",fileName.c_str());
     string id1Str, id2Str;
     unordered_set<int> nodesInFile;
     while(infile >> id1Str >> id2Str){
@@ -64,7 +64,7 @@ vector<vector<int>> getGraphAdjList(vector<unordered_set<int>>& graphSet){
 void mapNodes(string fileName, unordered_map<string,int>& nodesMapStrToInt, unordered_map<int,string>& nodesMapIntToStr, int& counter){
     ifstream infile;
     infile.open("gplus/"+fileName);
-    cout << "Reading "+fileName<<"... "<<endl;
+    printf("Reading %s ... \r",fileName.c_str());
 
     int dotPosition = fileName.find(".");
     string nodeId = fileName.substr(0,dotPosition);
@@ -110,7 +110,7 @@ vector<vector<int>> createGraph(string edgeDirection = "directed"){
     struct dirent *en;
     dr = opendir("./gplus"); //open all directory
     if (dr) {
-        cout << endl<< "Mapping nodes"<<endl<<endl;
+        cout << endl<< "Mapping nodes"<<endl;
         while ((en = readdir(dr)) != NULL) {
             string fileName = en->d_name;
             int dotPosition = fileName.find(".");
@@ -121,7 +121,7 @@ vector<vector<int>> createGraph(string edgeDirection = "directed"){
         }
         struct dirent *en;
         dr = opendir("./gplus");
-        cout <<endl<< "Creating graph"<<endl<<endl;
+        cout <<endl<<endl<< "Creating graph"<<endl;
         while ((en = readdir(dr)) != NULL) {
             string fileName = en->d_name;
             int dotPosition = fileName.find(".");
@@ -135,6 +135,7 @@ vector<vector<int>> createGraph(string edgeDirection = "directed"){
                 }
             }
         }
+        cout <<endl;
         closedir(dr); //close all directory
         graph = getGraphAdjList(graphSet);
     }
