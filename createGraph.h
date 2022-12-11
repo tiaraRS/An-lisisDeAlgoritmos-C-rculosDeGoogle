@@ -29,6 +29,29 @@ void getGraphSet(string fileName, unordered_map<string,int>& nodesMapStrToInt, v
     }
 }
 
+void getUndirectedGraphSet(string fileName, unordered_map<string,int>& nodesMapStrToInt, vector<unordered_set<int>>& graph){
+    ifstream infile;
+    infile.open("gplus/"+fileName);
+    int dotPosition = fileName.find(".");
+    string nodeIdStr = fileName.substr(0,dotPosition);
+    int nodeId = nodesMapStrToInt[nodeIdStr];
+    cout << "Reading "+fileName<<"... "<<endl;
+    string id1Str, id2Str;
+    unordered_set<int> nodesInFile;
+    while(infile >> id1Str >> id2Str){
+        int id1 = nodesMapStrToInt[id1Str];
+        int id2 = nodesMapStrToInt[id2Str];
+        graph[id1].insert(id2);
+        graph[id2].insert(id1);
+        nodesInFile.insert(id1);
+        nodesInFile.insert(id2);
+    }
+    for(auto it:nodesInFile){
+        graph[nodeId].insert(it);
+        graph[it].insert(nodeId);
+    }
+}
+
 vector<vector<int>> getGraphAdjList(vector<unordered_set<int>>& graphSet){
     vector<vector<int>> graph;
     for(auto nodeAdj:graphSet){
@@ -76,7 +99,8 @@ int numberOfEdges(vector<vector<int>> graph){
     return nEdges;
 }
 
-vector<vector<int>> createGraph(){
+vector<vector<int>> createGraph(string edgeDirection = "directed"){
+    bool undirected = edgeDirection == "undirected";
     unordered_map<string,int> nodesStrToInt;
     unordered_map<int,string> nodesIntToStr;
     vector<unordered_set<int>> graphSet(102120,unordered_set<int>());
@@ -103,7 +127,12 @@ vector<vector<int>> createGraph(){
             int dotPosition = fileName.find(".");
             string extension = fileName.substr(dotPosition+1);
             if(extension=="edges"){
-                getGraphSet(fileName,nodesStrToInt,graphSet);
+                if ( undirected ){
+                    getUndirectedGraphSet(fileName,nodesStrToInt,graphSet);
+                }
+                else {
+                    getGraphSet(fileName,nodesStrToInt,graphSet);
+                }
             }
         }
         closedir(dr); //close all directory
