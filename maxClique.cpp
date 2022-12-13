@@ -14,6 +14,8 @@ int min(set<int> u){
     }
     return min;
 }
+set<int> maxClique;
+set<int> currentClique;
 
 int maxCliqueSize = 0;//tamaño del clique mas grande
 void clique(set<int> u,int size, map<int,vector<int>>& graph){
@@ -22,6 +24,7 @@ void clique(set<int> u,int size, map<int,vector<int>>& graph){
     if(u.size()==0){
         if(size > maxCliqueSize){
             maxCliqueSize = size;
+            maxClique = currentClique;
             //Guardar el clique
         }
         return;
@@ -36,9 +39,10 @@ void clique(set<int> u,int size, map<int,vector<int>>& graph){
         }
         //asumiendo que el grafo esta ordenado de mayor a menor
         int vi = min(u);
-        cout << "vi " << vi <<endl;
+        // cout << "vi " << vi <<endl;
         auto viAdj = graph[vi];//N(vi)
         // cout << "vi adj " << viAdj[0] <<endl;
+        currentClique.insert(vi);
         u.erase(vi);
         set<int> intersect;
         //to do sort
@@ -46,7 +50,12 @@ void clique(set<int> u,int size, map<int,vector<int>>& graph){
         set_intersection(u.begin(), u.end(), nvi.begin(), nvi.end(),
         std::inserter(intersect, intersect.begin()));
         // cout << "intersect pass " <<endl;
+        // for(auto el:u){
+        //     cout<<el<<" ";
+        // }
+        // cout <<endl;
         clique(intersect,size+1,graph);
+        currentClique.clear();
     }
     return;
 }
@@ -77,16 +86,50 @@ void checkIntersectionFail(){
 }
 
 int main(){
+    // map<int,vector<int>> graph;
+    // graph[0] = {};
+    // graph[1] = {3,5,6,8};
+    // graph[3] = {1,6,7,8};
+    // graph[5] = {1,2,7,8};
+    // graph[6] = {1,2,3,4};
+    // graph[7] = {2,3,4,5};
+    // graph[8] = {1,3,4,5};
+    // graph[4] = {6,7,8};
+    // graph[2] = {5,6,7};
+    // set<int> u = {1,2,3,4,5,6,7,8};
+    // map<int,vector<int>> graph;
+    // graph[0] = {};
+    // graph[1] = {3,5,8};
+    // graph[3] = {1,6,7,8};
+    // graph[5] = {1,2,7,8};
+    // graph[6] = {2,3,4};
+    // graph[7] = {2,3,4,5};
+    // graph[8] = {1,3,4,5};
+    // graph[4] = {6,7,8};
+    // graph[2] = {5,6,7};
+    // set<int> u = {1,2,3,4,5,6,7,8};
+    // map<int,vector<int>> graph;
+    // graph[0] = {};
+    // graph[1] = {5,8};
+    // graph[3] = {6,7,8};
+    // graph[5] = {1,2,7,8};
+    // graph[6] = {2,3,4};
+    // graph[7] = {2,3,4,5};
+    // graph[8] = {1,3,4,5};
+    // graph[4] = {6,7,8};
+    // graph[2] = {5,6,7};
+    // set<int> u = {1,2,3,4,5,6,7,8};
     map<int,vector<int>> graph;
     graph[0] = {};
-    graph[1] = {3,5,6,8};
-    graph[3] = {1,6,7,8};
+    graph[1] = {5};
+    graph[3] = {6,7,8};
     graph[5] = {1,2,7,8};
-    graph[6] = {1,2,3,4};
+    graph[6] = {2,3,4};
     graph[7] = {2,3,4,5};
-    graph[8] = {1,3,4,5};
+    graph[8] = {3,4,5};
     graph[4] = {6,7,8};
     graph[2] = {5,6,7};
+    set<int> u = {1,2,3,4,5,6,7,8};
     // map<int,vector<int>> graph2;
     // graph2[0] = {};
     // graph2[1] = {2,3,4,5};
@@ -95,7 +138,17 @@ int main(){
     // graph2[4] = {1,2,3,5};
     // graph2[2] = {1,3,4,5};
     // set<int> u = {1,2,3,4,5};
-    set<int> u = {1,2,3,4,5,6,7,8};
+    // map<int,vector<int>> graph2;//3
+    // graph2[0] = {};
+    // graph2[3] = {1,2,4,5};
+    // graph2[4] = {1,2,3,5};
+    // graph2[2] = {1,3,4,5};
+    // graph2[5] = {2,3,4};
+    // graph2[1] = {2,3,4};
+    // set<int> u = {1,2,3,4,5};
     clique(u,0,graph);
     cout << "Max clique size "<< maxCliqueSize <<endl;
+    for(auto el:maxClique){
+        cout<<el<<" ";
+    }
 }
