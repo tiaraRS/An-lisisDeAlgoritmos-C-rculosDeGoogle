@@ -132,5 +132,5 @@ int main(){
     return 0;
 }
 
-// El n├║mero total de usuarios en la red102120
-// El n├║mero total de conexiones en la red13667810
+// El n├║mero total de usuarios en la red 102120
+// El n├║mero total de conexiones en la red 13667810

@@ -15,6 +15,9 @@
         "unordered_set": "cpp",
         "chrono": "cpp",
         "utility": "cpp",
-        "climits": "cpp"
+        "climits": "cpp",
+        "set": "cpp",
+        "algorithm": "cpp",
+        "iterator": "cpp"
     }
 }
