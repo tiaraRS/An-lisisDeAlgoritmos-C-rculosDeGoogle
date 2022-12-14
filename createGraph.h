@@ -31,9 +31,11 @@ void mapNodes(string fileName, unordered_map<string,int>& nodesMapStrToInt, unor
 
     int dotPosition = fileName.find(".");
     string nodeId = fileName.substr(0,dotPosition);
+
+    counter = nodesMapStrToInt.size();//nueva correccion
     nodesMapStrToInt.insert({ nodeId, counter });
     nodesMapIntToStr.insert({ counter, nodeId });
-
+    
     string id1Str, id2Str;
     while(infile >> id1Str >> id2Str){
         // counter se actualiza cada que se añade un par
@@ -49,6 +51,7 @@ void mapNodes(string fileName, unordered_map<string,int>& nodesMapStrToInt, unor
         nodesMapStrToInt.insert({ id2Str, id2 });
         nodesMapIntToStr.insert({ id2, id2Str });
     }
+    infile.close();
 }
 
 void getSetOfNodes(string fileName, unordered_map<string,int>& nodesMapStrToInt, unordered_map<int,string>& nodesMapIntToStr, set<int>& setOfNodes, int& counter){
@@ -239,6 +242,13 @@ map<int,vector<int>> createGraphMap(string edgeDirection = "directed"){
                 mapNodes(fileName,nodesStrToInt,nodesIntToStr,counter);
             }
         }
+        ofstream outfile;
+        outfile.open("cliques/nodesMapIntStr.out");
+        for (auto el:nodesIntToStr){
+            outfile << " " << el.first << " " << el.second << endl;
+            //cout << el.first << " " << el.second << endl;
+        }
+        outfile.close();
         vector<unordered_set<int>> graphSet(nodesStrToInt.size(),unordered_set<int>());
         struct dirent *en;
         dr = opendir("./gplus");
