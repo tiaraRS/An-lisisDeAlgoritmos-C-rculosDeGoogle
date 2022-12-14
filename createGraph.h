@@ -223,7 +223,7 @@ vector<vector<int>> createGraph(string edgeDirection = "directed"){
 
 
 
-map<int,vector<int>> createGraphMap(string edgeDirection = "directed"){
+map<int,vector<int>> createGraphMap(string edgeDirection = "directed", string outFilename = "cliques/nodesMapIntStr.out"){
     bool undirected = edgeDirection == "undirected";
     unordered_map<string,int> nodesStrToInt;
     unordered_map<int,string> nodesIntToStr;
@@ -243,10 +243,9 @@ map<int,vector<int>> createGraphMap(string edgeDirection = "directed"){
             }
         }
         ofstream outfile;
-        outfile.open("cliques/nodesMapIntStr.out");
+        outfile.open(outFilename);
         for (auto el:nodesIntToStr){
             outfile << " " << el.first << " " << el.second << endl;
-            //cout << el.first << " " << el.second << endl;
         }
         outfile.close();
         vector<unordered_set<int>> graphSet(nodesStrToInt.size(),unordered_set<int>());
