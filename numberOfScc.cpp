@@ -11,8 +11,20 @@ using namespace std;
 /* ================================================================================================================
 DFS para Algoritmo de Tarjan:
 
-
+Este algoritmo hace uso de DFS para encontrar componentes fuertemente conexas.
+Parámetros:
+    - current: es el nodo actual
+    - id: representa un identificador para cada nodo del grafo
+    - sccCount: contador de componentes conexas del grafo
+    - g: grafo como lista de adyacencias
+    - visited: vector booleano que indica los nodos que han sido visitados y los que no
+    - ids: vector que almacena los identificadores de cada nodo del grafo
+    - low: vector que almacena low low-link values de los nodos del grafo, referidos como el menor id de nodo
+           alcanzable desde ese nodo al realizar un DFS (incluyéndose a sí mismo)
+    - stackG: pila para almacenar los nodos válidos para actualizar los low-link values
+    - onStack: vector booleano que indica los nodos que se encuentran en la pila stackG
 ================================================================================================================ */
+
 void dfs(int current, int &id, int &sccCount, const vector<vector<int>> &g, vector<bool> &visited, vector<int> &ids, vector<int> &low, stack<int> &stackG, vector<bool> &onStack)
 {
     ids[current] = low[current] = ++id;
@@ -24,11 +36,12 @@ void dfs(int current, int &id, int &sccCount, const vector<vector<int>> &g, vect
         {
             dfs(neighbor, id, sccCount, g, visited, ids, low, stackG, onStack);
         }
-        if (onStack[neighbor])
+        if (onStack[neighbor]) // si se encuentra en la pila
         {
-            low[current] = min(low[current], low[neighbor]);
+            low[current] = min(low[current], low[neighbor]); // actualizar el low-link value
         }
     }
+    // después de visitar todos los vecinos
     if (ids[current] == low[current])
     {
         int node = stackG.top(); // new scc
@@ -45,6 +58,13 @@ void dfs(int current, int &id, int &sccCount, const vector<vector<int>> &g, vect
         sccCount++;
     }
 }
+
+/* ================================================================================================================
+findSCCs para Algoritmo de Tarjan:
+
+Por cada nodo del grafo que no haya sido asignado un id, el algoritmo lanza un dfs desde el cual pretende encontrar
+componentes fuertemente conexas.
+================================================================================================================ */
 
 pair<int, vector<int>> findSCCs(int N, const vector<vector<int>> &g)
 { // lista de adyacencia
