@@ -6,27 +6,23 @@
 
 using namespace std;
 
-vector<bool> visited;
-vector<int> ids;
-vector<int> low;
-stack<int> stackG;
-vector<bool> onStack;
-vector<vector<int>> g;
+// Tarjan's Algorithm
 
-int id = -1;
-int sccCount = 0;
+/* ================================================================================================================
+DFS para Algoritmo de Tarjan:
 
-//tarjans
-void dfs(int current){
+
+================================================================================================================ */
+void dfs(int current, int &id, int &sccCount, const vector<vector<int>> &g, vector<bool> &visited, vector<int> &ids, vector<int> &low, stack<int> &stackG, vector<bool> &onStack)
+{
     ids[current] = low[current] = ++id;
     stackG.push(current);
     onStack[current] = true;
     for (auto neighbor : g[current])
     {
-        //  cout<<"neighbor = "<<neighbor<<endl;
         if (ids[neighbor] == UNVISITED)
         {
-            dfs(neighbor);
+            dfs(neighbor, id, sccCount, g, visited, ids, low, stackG, onStack);
         }
         if (onStack[neighbor])
         {
@@ -50,35 +46,40 @@ void dfs(int current){
     }
 }
 
-vector<int> findSCCs(int N)
+pair<int, vector<int>> findSCCs(int N, const vector<vector<int>> &g)
 { // lista de adyacencia
-    // cout << "ids 0 " << ids[0] << endl;
+    vector<bool> visited;
+    vector<int> ids;
+    vector<int> low;
+    stack<int> stackG;
+    vector<bool> onStack;
+
+    visited = vector<bool>(g.size(), false);
+    ids = vector<int>(g.size(), UNVISITED);
+    low = vector<int>(g.size(), 0);
+    onStack = vector<bool>(g.size(), false);
+    stackG = stack<int>();
+    int id = 0;
+    int sccCount = 0;
     for (int i = 0; i < N; i++)
     {
-        // cout << "ids "<< i << " "<< ids[i] << endl;
         if (ids[i] == UNVISITED)
         {
-            dfs(i);
+            dfs(i, id, sccCount, g, visited, ids, low, stackG, onStack);
         }
     }
-    return low;
+    return {sccCount, low};
 }
 
 int main()
 {
+    vector<vector<int>> g;
     g = createGraph();
-    
-    visited = vector<bool>(g.size(), false);;
-    ids = vector<int>(g.size(), UNVISITED);
-    low = vector<int>(g.size(), 0);
-    onStack = vector<bool>(g.size(), false);;
-    stackG = stack<int>();
-    
-    id = 0;
-    sccCount = 0;
-    cout <<endl<<endl<< "SCCs counting"<<endl;
-    vector<int> lowVals = findSCCs(g.size());
-    cout << "La red tiene " << sccCount << " componentes fuertemente conexas"<<endl;
+    cout << endl
+         << endl
+         << "SCCs counting" << endl;
+    auto sccResult = findSCCs(g.size(), g);
+    cout << "La red tiene " << sccResult.first << " componentes fuertemente conexas" << endl;
 
     return 0;
 }
