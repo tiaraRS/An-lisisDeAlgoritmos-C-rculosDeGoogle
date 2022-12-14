@@ -203,6 +203,8 @@ int main()
 
 // PARA COMPILAR: g++ -O2 -std=c++11 -Wall "-Wl,--stack=268435456" maxAndAvgDistance.cpp -o maxAndAvgDistance.exe
 // PARA EJECUTAR LAS PRUEBAS: ejecutar archivo maxAndAvgDistanceTests.exe
+// El resultado de la ejecución de los tests y las imagenes de los grafos de prueba se pueden ver en la carpeta testGraphs/maxAndAvgDistanceTests/maxAndAvgDistanceTests.out
+
 //  RESULTADOS:
 // 3. La distancia máxima entre dos usuarios cualquiera de la red es 6
 // 4. La distancia promedio entre dos usuarios cualquiera de la red es 2.82836

@@ -200,8 +200,8 @@ void runTests()
 
 int main()
 {
-    runTests();
-    /*vector<vector<int>> g;
+    // runTests();
+    vector<vector<int>> g;
     g = createGraph();
     cout << endl
          << endl
@@ -209,11 +209,12 @@ int main()
     auto sccResult = findSCCs(g.size(), g);
     cout << "La red tiene " << sccResult.first << " componentes fuertemente conexas" << endl;
 
-    return 0;*/
+    return 0;
 }
 
 // PARA COMPILAR: g++ -O2 -std=c++11 -Wall "-Wl,--stack=268435456" numberOfScc.cpp -o numberOfScc.exe
 // PARA EJECUTAR LAS PRUEBAS: ejecutar archivo numberOfSccTests.exe
+// El resultado de la ejecución de los testsy las imagenes de los grafos de prueba se pueden ver en la carpeta testGraphs/numberOfScc/numberOfSccTests.out
 
 //  RESULTADO:
 //  5. La red tiene 32308 componentes fuertemente conexas
