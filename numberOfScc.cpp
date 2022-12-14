@@ -3,6 +3,8 @@
 #include <iostream>
 #include <vector>
 #include <stack>
+#include <assert.h>
+#include <stdio.h>
 #include "createGraph.h"
 #define UNVISITED -1
 
@@ -93,9 +95,113 @@ pair<int, vector<int>> findSCCs(int N, const vector<vector<int>> &g)
     return {sccCount, low};
 }
 
+/*
+==============================================================================================
+    TESTS REALIZADOS:
+    PRUEBAS REALIZADAS PARA PROBAR EL FUNCIONAMIENTO CORRECTO DEL ALGORITMO:
+    Para correr las pruebas ejecutar numberOfSccTests.exe
+==============================================================================================
+*/
+
+void print(vector<vector<int>> graph)
+{
+    int n = 0;
+    for (auto adjList : graph)
+    {
+        cout << n << " -> ";
+        for (auto node : adjList)
+        {
+            cout << node << " ";
+        }
+        cout << endl;
+        n++;
+    }
+}
+
+vector<vector<int>> proveGraph(int ver = 1)
+{
+    vector<vector<int>> graph;
+    if (ver == 1)
+    {
+        graph.push_back(vector<int>({1, 2}));    // 0
+        graph.push_back(vector<int>({0, 3}));    // 1
+        graph.push_back(vector<int>({0, 3}));    // 2
+        graph.push_back(vector<int>({4}));       // 3
+        graph.push_back(vector<int>({3}));       // 4
+        graph.push_back(vector<int>({2, 4, 7})); // 5
+        graph.push_back(vector<int>({5}));       // 6
+        graph.push_back(vector<int>({4, 6}));    // 7
+        graph.push_back(vector<int>({7, 6, 8})); // 8
+    }
+    if (ver == 2)
+    {
+        graph.push_back(vector<int>({1, 2}));    // 0
+        graph.push_back(vector<int>({0, 3}));    // 1
+        graph.push_back(vector<int>({0, 3}));    // 2
+        graph.push_back(vector<int>({4}));       // 3
+        graph.push_back(vector<int>({3}));       // 4
+        graph.push_back(vector<int>({2, 4, 7})); // 5
+        graph.push_back(vector<int>({5}));       // 6
+        graph.push_back(vector<int>({4, 6}));    // 7
+    }
+    if (ver == 3)
+    {
+        graph.push_back(vector<int>({1, 2}));    // 0
+        graph.push_back(vector<int>({3}));       // 1
+        graph.push_back(vector<int>({0, 3}));    // 2
+        graph.push_back(vector<int>({}));        // 3
+        graph.push_back(vector<int>({3}));       // 4
+        graph.push_back(vector<int>({2, 4, 7})); // 5
+        graph.push_back(vector<int>({5}));       // 6
+        graph.push_back(vector<int>({4, 6}));    // 7
+        graph.push_back(vector<int>({7, 6}));    // 8
+    }
+    if (ver == 4)
+    {
+        graph.push_back(vector<int>({})); // 0
+        graph.push_back(vector<int>({})); // 1
+        graph.push_back(vector<int>({})); // 2
+        graph.push_back(vector<int>({})); // 3
+        graph.push_back(vector<int>({})); // 4
+        graph.push_back(vector<int>({})); // 5
+        graph.push_back(vector<int>({})); // 6
+        graph.push_back(vector<int>({})); // 7
+    }
+    return graph;
+}
+
+void runTest(int numTest, unordered_map<int, int> answers)
+{
+    cout << "------- TEST # " << numTest << "-------" << endl;
+    vector<vector<int>> g = proveGraph(numTest);
+    cout << "graph # " << numTest << " : " << endl;
+    print(g);
+    auto sccResult = findSCCs(g.size(), g);
+    cout << "La red tiene " << sccResult.first << " componentes fuertemente conexas" << endl;
+    cout << endl
+         << endl;
+    assert(sccResult.first == answers[numTest]);
+}
+
+void runTests()
+{
+    int numTests = 4;
+    unordered_map<int, int> answers(numTests);
+    answers.insert({1, 4});
+    answers.insert({2, 3});
+    answers.insert({3, 6});
+    answers.insert({4, 8});
+    for (int i = 1; i <= numTests; i++)
+    {
+        cout << "numTest = " << i << endl;
+        runTest(i, answers);
+    }
+}
+
 int main()
 {
-    vector<vector<int>> g;
+    runTests();
+    /*vector<vector<int>> g;
     g = createGraph();
     cout << endl
          << endl
@@ -103,10 +209,11 @@ int main()
     auto sccResult = findSCCs(g.size(), g);
     cout << "La red tiene " << sccResult.first << " componentes fuertemente conexas" << endl;
 
-    return 0;
+    return 0;*/
 }
 
 // PARA COMPILAR: g++ -O2 -std=c++11 -Wall "-Wl,--stack=268435456" numberOfScc.cpp -o numberOfScc.exe
+// PARA EJECUTAR LAS PRUEBAS: ejecutar archivo numberOfSccTests.exe
 
 //  RESULTADO:
 //  5. La red tiene 32308 componentes fuertemente conexas

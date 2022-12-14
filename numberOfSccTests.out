@@ -1,0 +1,58 @@
+numTest = 1
+------- TEST # 1-------
+graph # 1 : 
+0 -> 1 2 
+1 -> 0 3 
+2 -> 0 3 
+3 -> 4 
+4 -> 3 
+5 -> 2 4 7 
+6 -> 5 
+7 -> 4 6 
+8 -> 7 6 8 
+La red tiene 4 componentes fuertemente conexas
+
+
+numTest = 2
+------- TEST # 2-------
+graph # 2 : 
+0 -> 1 2 
+1 -> 0 3 
+2 -> 0 3 
+3 -> 4 
+4 -> 3 
+5 -> 2 4 7 
+6 -> 5 
+7 -> 4 6 
+La red tiene 3 componentes fuertemente conexas
+
+
+numTest = 3
+------- TEST # 3-------
+graph # 3 : 
+0 -> 1 2 
+1 -> 3 
+2 -> 0 3 
+3 -> 
+4 -> 3 
+5 -> 2 4 7 
+6 -> 5 
+7 -> 4 6 
+8 -> 7 6 
+La red tiene 6 componentes fuertemente conexas
+
+
+numTest = 4
+------- TEST # 4-------
+graph # 4 : 
+0 -> 
+1 -> 
+2 -> 
+3 -> 
+4 -> 
+5 -> 
+6 -> 
+7 -> 
+La red tiene 8 componentes fuertemente conexas
+
+
