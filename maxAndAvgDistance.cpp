@@ -8,28 +8,30 @@
 #include "createGraph.h"
 #define UNVISITED -1
 using namespace std;
+int INF  = INT_MAX;
 
 int maxDistance = 0;
 long double avgDistance = 0;
 long double paths = 0;
-int INF  = INT_MAX;
 
 vector<int> bfs(int s, vector<vector<int>>& graph){
-    // cout << "s "<<s<<endl;
     vector<int> d(graph.size(), INF);
     d[s] = 0; // distance from source s to s is 0
-    queue<int> q; 
+    queue<int> q;
     q.push(s); // start from source
     while (!q.empty()) {
+        
         int u = q.front(); q.pop(); // queue: layer by layer!
         if (d[u] > maxDistance){
             maxDistance = d[u];
         }
-        if (d[u]>0){
-            // cout << "distance("<<s<<","<<u<<") = "<< d[u] << endl;
-            paths++;
+
+        //considerar solo distancias > 0 para el calculo de la distancia promedio
+        if (d[u] > 0){
             avgDistance += d[u];
+            paths++;
         }
+
         for (auto neighbor:graph[u]){
             if (d[neighbor] == INF) { // if v.first is unvisited + reachable
                 d[neighbor] = d[u] + 1; // make d[v.first] != INF to flag it
@@ -40,6 +42,7 @@ vector<int> bfs(int s, vector<vector<int>>& graph){
     return d;
 }
 
+//TODO refactorizar como pruebas + figuras en drawio o mermaid
 vector<vector<int>> proveGraph(int ver = 1){
     vector<vector<int>> graph;
     if (ver == 1 ){
@@ -107,14 +110,15 @@ void print(vector<vector<int>> graph){
 }
 
 int main(){
-    vector<vector<int>> g = createGraph("undirected");
+    vector<vector<int>> graph = createGraph("undirected");
     // vector<vector<int>> g = proveGraph(4);
     // print(g);
     vector<vector<int>> distance;
-    int gsize = g.size() ;
+    int gsize = graph.size();
+    int lastNodeId = gsize - 1;
     for(int node = 0; node < gsize; node++){
-        bfs(node,g);
-        printf("-> BFS at [ %d / %d ]\r",node,gsize);
+        printf("-> BFS at [ %d / %d ]\r",node,lastNodeId);
+        bfs(node,graph);
     }
     cout << "La distancia máxima entre dos usuarios cualquiera de la red es " << maxDistance << endl;
     avgDistance = avgDistance / paths;

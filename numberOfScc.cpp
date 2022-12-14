@@ -12,17 +12,15 @@ vector<int> low;
 stack<int> stackG;
 vector<bool> onStack;
 vector<vector<int>> g;
-int id = 0;
+
+int id = -1;
 int sccCount = 0;
-void dfs(int current)
-{
-    // cout << "current " << current << endl;
-    // cout << "g[current] size " << g[current].size() << endl;
+
+//tarjans
+void dfs(int current){
     ids[current] = low[current] = ++id;
     stackG.push(current);
-    // cout<<"stackG push pasa"<<endl;
     onStack[current] = true;
-    //  cout<<"onstack pasa"<<endl;
     for (auto neighbor : g[current])
     {
         //  cout<<"neighbor = "<<neighbor<<endl;
@@ -51,19 +49,7 @@ void dfs(int current)
         sccCount++;
     }
 }
-void printGraph(const vector<vector<int>> &graph, int N)
-{
-    for (int i = 1; i <= N; i++)
-    {
-        cout << "i = " << i << endl;
-        cout << i << " -> [ ";
-        for (int j = 0; j < graph[i].size(); j++)
-        {
-            cout << graph[i][j] << ", ";
-        }
-        cout << " ]" << endl;
-    }
-}
+
 vector<int> findSCCs(int N)
 { // lista de adyacencia
     // cout << "ids 0 " << ids[0] << endl;
@@ -81,21 +67,18 @@ vector<int> findSCCs(int N)
 int main()
 {
     g = createGraph();
-    cout << g.size();
-    cout << g[0].size() << endl;
-    vector<int> low1(g.size(), 0);
-    vector<bool> visited1(g.size(), false);
-    vector<int> ids1(g.size(), UNVISITED);
-    vector<bool> onStack1(g.size(), false);
-    visited = visited1;
-    ids = ids1;
-    low = low1;
-    onStack = onStack1;
+    
+    visited = vector<bool>(g.size(), false);;
+    ids = vector<int>(g.size(), UNVISITED);
+    low = vector<int>(g.size(), 0);
+    onStack = vector<bool>(g.size(), false);;
     stackG = stack<int>();
+    
     id = 0;
     sccCount = 0;
-    cout << "SCCs counting"<<endl;
+    cout <<endl<<endl<< "SCCs counting"<<endl;
     vector<int> lowVals = findSCCs(g.size());
-    int s = sccCount;
     cout << "La red tiene " << sccCount << " componentes fuertemente conexas"<<endl;
+
+    return 0;
 }
