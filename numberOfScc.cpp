@@ -1,3 +1,5 @@
+// EJERCICIO 5: Indicar cuántas componentes fuertemente conexas tiene la red
+
 #include <iostream>
 #include <vector>
 #include <stack>
@@ -103,3 +105,8 @@ int main()
 
     return 0;
 }
+
+// PARA COMPILAR: g++ -O2 -std=c++11 -Wall "-Wl,--stack=268435456" numberOfScc.cpp -o numberOfScc.exe
+
+//  RESULTADO:
+//  5. La red tiene 32308 componentes fuertemente conexas
