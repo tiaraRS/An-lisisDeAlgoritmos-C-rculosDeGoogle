@@ -4,8 +4,10 @@
 #include <sys/types.h>
 #include <string>
 #include <vector>
+#include <map>
 #include <unordered_map>
 #include <unordered_set>
+#include <set>
 using namespace std;
 
 void getGraphSet(string fileName, unordered_map<string,int>& nodesMapStrToInt, vector<unordered_set<int>>& graph){
@@ -140,4 +142,88 @@ vector<vector<int>> createGraph(string edgeDirection = "directed"){
         graph = getGraphAdjList(graphSet);
     }
     return graph;
+}
+
+map<int,vector<int>> getGraphMapAdjList(vector<unordered_set<int>>& graphSet){
+    map<int,vector<int>> graph;
+    int i = 0;
+    for(auto nodeAdj:graphSet){
+        vector<int> adj = vector<int>(nodeAdj.begin(),nodeAdj.end()); 
+        graph[i] = adj;
+        i++;
+    }
+    return graph;
+}
+
+map<int,vector<int>> createGraphMap(string edgeDirection = "directed"){
+    bool undirected = edgeDirection == "undirected";
+    unordered_map<string,int> nodesStrToInt;
+    unordered_map<int,string> nodesIntToStr;
+    vector<unordered_set<int>> graphSet(102120,unordered_set<int>());
+    map<int,vector<int>> graph;
+    int counter = 0;
+    DIR *dr;
+    struct dirent *en;
+    dr = opendir("./gplus"); //open all directory
+    if (dr) {
+        cout << endl<< "Mapping nodes"<<endl;
+        while ((en = readdir(dr)) != NULL) {
+            string fileName = en->d_name;
+            int dotPosition = fileName.find(".");
+            string extension = fileName.substr(dotPosition+1);
+            if(extension=="edges"){
+                mapNodes(fileName,nodesStrToInt,nodesIntToStr,counter);
+            }
+        }
+        struct dirent *en;
+        dr = opendir("./gplus");
+        cout <<endl<<endl<< "Creating graph"<<endl;
+        while ((en = readdir(dr)) != NULL) {
+            string fileName = en->d_name;
+            int dotPosition = fileName.find(".");
+            string extension = fileName.substr(dotPosition+1);
+            if(extension=="edges"){
+                if ( undirected ){
+                    getUndirectedGraphSet(fileName,nodesStrToInt,graphSet);
+                }
+                else {
+                    getGraphSet(fileName,nodesStrToInt,graphSet);
+                }
+            }
+        }
+        cout <<endl;
+        closedir(dr); //close all directory
+        graph = getGraphMapAdjList(graphSet);
+    }
+    return graph;
+}
+void getSetOfNodes(string fileName, unordered_map<string,int>& nodesMapStrToInt, unordered_map<int,string>& nodesMapIntToStr,set<int>& setOfNodes, int& counter){
+    ifstream infile;
+    infile.open("gplus/"+fileName);
+    printf("Reading %s ... \r",fileName.c_str());
+
+    int dotPosition = fileName.find(".");
+    string nodeId = fileName.substr(0,dotPosition);
+    nodesMapStrToInt.insert({ nodeId, counter });
+    nodesMapIntToStr.insert({ counter, nodeId });
+    setOfNodes.insert(counter);
+
+    string id1Str, id2Str;
+    while(infile >> id1Str >> id2Str){
+
+
+        counter = nodesMapStrToInt.size();
+        int id1 = counter;
+        
+        setOfNodes.insert(id1);
+        nodesMapStrToInt.insert({ id1Str, id1});
+        nodesMapIntToStr.insert({ id1, id1Str});
+        
+        counter = nodesMapStrToInt.size();
+        int id2 = counter;
+        
+        setOfNodes.insert(id2);
+        nodesMapStrToInt.insert({ id2Str, id2 });
+        nodesMapIntToStr.insert({ id2, id2Str });
+    }
 }

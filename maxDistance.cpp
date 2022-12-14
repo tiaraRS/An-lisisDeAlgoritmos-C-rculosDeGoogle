@@ -10,8 +10,8 @@
 using namespace std;
 
 int maxDistance = 0;
-float avgDistance = 0;
-int paths = 0;
+long double avgDistance = 0;
+long double paths = 0;
 int INF  = INT_MAX;
 
 vector<int> bfs(int s, vector<vector<int>>& graph){
@@ -122,4 +122,5 @@ int main(){
     return 0;
 }
 //g++ -O2 -std=c++11 -Wall "-Wl,--stack=268435456" numberOfScc.cpp -o scc2.exe
-//La distancia m├íxima entre dos usuarios cualquiera de la red es 13
+// La distancia m├íxima entre dos usuarios cualquiera de la red es 6
+// La distancia promedio entre dos usuarios cualquiera de la red es 2.82836
