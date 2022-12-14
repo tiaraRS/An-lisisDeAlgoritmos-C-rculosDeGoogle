@@ -49,6 +49,13 @@ bool checkIfSetIsSubset(set<string> subset, set<string> set)
     return includes(set.begin(), set.end(), subset.begin(), subset.end());
 }
 
+int intersectionSize(set<string> set1, set<string> set2)
+{
+    set<string> intersection;
+    set_intersection(set1.begin(), set1.end(), set2.begin(), set2.end(), inserter(intersection, intersection.begin()));
+    return intersection.size();
+}
+
 void getAllIds()
 {
     set<string> edgesIds;
@@ -87,6 +94,8 @@ void getAllIds()
     else
     {
         cout << "NO todos los ids de nodos en los archivos .circles aparecen en los archivos .edges" << endl;
+        int size = intersectionSize(circlesIds, edgesIds);
+        cout << "Hay " << (circlesIds.size() - size) << " nodos que no se encuentran en los archivos .edges" << endl;
     }
 }
 
